@@ -5,22 +5,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>hw-three-starter</artifactId>
+        <artifactId>hw-three</artifactId>
         <groupId>isthatkirill</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hwthreestarter</artifactId>
+    <artifactId>http-logger-sample-app</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>isthatkirill</groupId>
+            <artifactId>http-logger-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 
