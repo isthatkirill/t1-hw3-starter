@@ -1,7 +1,6 @@
 package isthatkirill.hwthree.logger;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,42 +30,46 @@ public class LoggerFilter extends OncePerRequestFilter {
             throws IOException {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
-        String requestBody = getStringValue(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
-
-        log.info("Request received: method = [{}], uri = [{}], request body = [{}]",
-                request.getMethod(), request.getRequestURI(), requestBody);
-        log.info("Request headers = [{}]", getRequestHeadersAsString(request));
 
         long startTime = System.currentTimeMillis();
 
         try {
             filterChain.doFilter(requestWrapper, responseWrapper);
-        } catch (ServletException e) {
-            if (loggerProperties.getLogErrors().isEnabled()) {
-                logException(e.getRootCause(), responseWrapper);
-            }
-            return;
+            logRequest(requestWrapper);
+            logResponse(responseWrapper, startTime);
+        } catch (Throwable e) {
+            handleException(e.getCause(), requestWrapper, responseWrapper);
+        } finally {
+            responseWrapper.copyBodyToResponse();
         }
-
-        long timeTaken = System.currentTimeMillis() - startTime;
-        String responseBody = getStringValue(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
-        log.info("Request processing finished:  response status = [{}], response body = [{}], time taken = [{}]",
-                response.getStatus(), responseBody, timeTaken);
-        log.info("Response headers = [{}]", getResponseHeadersAsString(response));
-        responseWrapper.copyBodyToResponse();
     }
 
-    private void logException(Throwable cause, ContentCachingResponseWrapper wrapper) throws IOException {
+    private void logRequest(ContentCachingRequestWrapper requestWrapper) {
+        String requestBody = getBody(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding());
+        String requestHeaders = getRequestHeadersAsString(requestWrapper);
+        log.info("Request: method = [{}], uri = [{}], request body = [{}], request headers = [{}]",
+                requestWrapper.getMethod(), requestWrapper.getRequestURI(), requestBody, requestHeaders);
+    }
+
+    private void logResponse(ContentCachingResponseWrapper responseWrapper, long startTime) {
+        long timeTaken = System.currentTimeMillis() - startTime;
+        String responseBody = getResponseHeadersAsString(responseWrapper);
+        String responseHeaders = getResponseHeadersAsString(responseWrapper);
+        log.info("Response: response status = [{}], response body = [{}], time taken = [{} ms], response headers = [{}]",
+                responseWrapper.getStatus(), responseBody, timeTaken, responseHeaders);
+    }
+
+    private void handleException(Throwable cause, ContentCachingRequestWrapper requestWrapper,
+                                 ContentCachingResponseWrapper responseWrapper) throws IOException {
         String className = cause.getClass().getSimpleName();
         String message = cause.getMessage();
-        wrapper.resetBuffer();
-        wrapper.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        wrapper.getWriter().write("Error occurred: " + className + " [" + message + "]");
-        wrapper.getWriter().flush();
-        log.error("Request processing failed: error = [{}], response body = [{}], response status = [{}], ",
-                className, message, wrapper.getStatus());
-        log.info("Response headers = [{}]", getResponseHeadersAsString(wrapper));
-        wrapper.copyBodyToResponse();
+        responseWrapper.resetBuffer();
+        responseWrapper.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseWrapper.getWriter().write("Error occurred: " + className + " [" + message + "]");
+        responseWrapper.getWriter().flush();
+        logRequest(requestWrapper);
+        log.error("[FAILED]: error = [{}], response status = [{}],  response body = [{}]",
+                className, responseWrapper.getStatus(), message);
     }
 
     private String getRequestHeadersAsString(HttpServletRequest request) {
@@ -82,7 +85,7 @@ public class LoggerFilter extends OncePerRequestFilter {
                 .collect(Collectors.joining(" || "));
     }
 
-    private String getStringValue(byte[] contentAsByteArray, String characterEncoding) {
+    private String getBody(byte[] contentAsByteArray, String characterEncoding) {
         try {
             return new String(contentAsByteArray, 0, contentAsByteArray.length, characterEncoding);
         } catch (UnsupportedEncodingException e) {

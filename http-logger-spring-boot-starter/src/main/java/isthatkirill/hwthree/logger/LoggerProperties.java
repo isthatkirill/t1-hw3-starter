@@ -14,15 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LoggerProperties {
 
     private boolean enabled = true;
-    private LogErrors logErrors = new LogErrors();
-
-    @Getter
-    @Setter
-    public static class LogErrors {
-
-        private boolean enabled = true;
-
-    }
 
 }
 
