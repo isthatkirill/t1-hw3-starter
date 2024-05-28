@@ -1,4 +1,0 @@
-http.logging:
-  enabled: true
-  log-errors:
-    enabled: true

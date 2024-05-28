@@ -17,7 +17,7 @@ class LoggerSampleApplicationTest {
 
     @Test
     void contextLoads() {
-       // assertThat(applicationContext.getBean(LoggingErrorAspect.class)).isNotNull();
+        // assertThat(applicationContext.getBean(LoggingErrorAspect.class)).isNotNull();
     }
 
 }
