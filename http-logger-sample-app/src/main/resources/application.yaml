@@ -1,2 +1,4 @@
-http.logging:
-  enabled: true
+http:
+  logging:
+    enabled: true
+    methods: [ 'GET' ]

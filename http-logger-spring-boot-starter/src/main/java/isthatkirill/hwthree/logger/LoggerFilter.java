@@ -35,10 +35,12 @@ public class LoggerFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(requestWrapper, responseWrapper);
+            if (!loggerProperties.getMethods().contains(requestWrapper.getMethod())) return;
             logRequest(requestWrapper);
             logResponse(responseWrapper, startTime);
         } catch (Throwable e) {
-            handleException(e.getCause(), requestWrapper, responseWrapper);
+            logRequest(requestWrapper);
+            handleException(e.getCause(), responseWrapper);
         } finally {
             responseWrapper.copyBodyToResponse();
         }
@@ -59,15 +61,13 @@ public class LoggerFilter extends OncePerRequestFilter {
                 responseWrapper.getStatus(), responseBody, timeTaken, responseHeaders);
     }
 
-    private void handleException(Throwable cause, ContentCachingRequestWrapper requestWrapper,
-                                 ContentCachingResponseWrapper responseWrapper) throws IOException {
+    private void handleException(Throwable cause, ContentCachingResponseWrapper responseWrapper) throws IOException {
         String className = cause.getClass().getSimpleName();
         String message = cause.getMessage();
         responseWrapper.resetBuffer();
         responseWrapper.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         responseWrapper.getWriter().write("Error occurred: " + className + " [" + message + "]");
         responseWrapper.getWriter().flush();
-        logRequest(requestWrapper);
         log.error("[FAILED]: error = [{}], response status = [{}],  response body = [{}]",
                 className, responseWrapper.getStatus(), message);
     }
