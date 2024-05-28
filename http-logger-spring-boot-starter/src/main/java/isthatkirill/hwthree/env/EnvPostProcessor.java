@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author Kirill Emelyanov
  */
 
+
 public class EnvPostProcessor implements EnvironmentPostProcessor {
 
     private final YamlPropertySourceLoader propertySourceLoader;
