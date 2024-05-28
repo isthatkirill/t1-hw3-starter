@@ -16,6 +16,15 @@ import org.springframework.stereotype.Component;
 public class LoggerProperties {
 
     private boolean enabled;
+    private LogErrors logErrors;
+
+    @Getter
+    @Setter
+    public static class LogErrors {
+
+        private boolean enabled;
+
+    }
 
 }
 

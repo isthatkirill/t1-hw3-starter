@@ -3,10 +3,7 @@ package isthatkirill.hwthree.sample.web.controller;
 import isthatkirill.hwthree.sample.web.dto.SampleUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Kirill Emelyanov
@@ -22,6 +19,12 @@ public class SampleUserController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("header-for-example", "example")
                 .body(sampleUser);
+    }
+
+    @GetMapping
+    public String error() {
+        throw new RuntimeException("error");
+
     }
 
 

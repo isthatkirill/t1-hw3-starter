@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoggingFilter extends OncePerRequestFilter {
+public class LoggerFilter extends OncePerRequestFilter {
 
     private final LoggerProperties loggerProperties;
 
@@ -42,7 +43,9 @@ public class LoggingFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } catch (ServletException e) {
-            logException(e.getRootCause(), responseWrapper);
+            if (loggerProperties.getLogErrors().isEnabled()) {
+                logException(e.getRootCause(), responseWrapper);
+            }
             return;
         }
 

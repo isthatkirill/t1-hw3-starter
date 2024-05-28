@@ -1,8 +1,8 @@
 package isthatkirill.hwthree.autoconfigure;
 
+import isthatkirill.hwthree.logger.LoggerFilter;
 import isthatkirill.hwthree.logger.LoggerProperties;
-import isthatkirill.hwthree.logger.LoggingFilter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Configuration;
 public class LoggerAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(LoggingFilter.class)
-    public LoggingFilter loggingFilter(LoggerProperties loggerProperties) {
-        return new LoggingFilter(loggerProperties);
+    @ConditionalOnProperty(name = "http.logging.enabled", havingValue = "true", matchIfMissing = true)
+    public LoggerFilter loggingFilter(LoggerProperties loggerProperties) {
+        return new LoggerFilter(loggerProperties);
     }
 
 }
