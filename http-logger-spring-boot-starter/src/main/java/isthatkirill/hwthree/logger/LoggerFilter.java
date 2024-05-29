@@ -10,8 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -90,9 +89,17 @@ public class LoggerFilter extends OncePerRequestFilter {
     }
 
     private String getBody(byte[] contentAsByteArray, String characterEncoding) {
-        try {
-            return new String(contentAsByteArray, 0, contentAsByteArray.length, characterEncoding);
-        } catch (UnsupportedEncodingException e) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(contentAsByteArray);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, characterEncoding);
+             BufferedReader reader = new BufferedReader(inputStreamReader)) {
+
+            StringBuilder bodyBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                bodyBuilder.append(line.trim());
+            }
+            return bodyBuilder.toString();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
