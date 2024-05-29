@@ -15,17 +15,39 @@ public class SampleUserController {
 
     @PostMapping
     public ResponseEntity<SampleUser> addUser(@RequestBody SampleUser sampleUser) {
-        // some logic
+        // some logic to add
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("header-for-example", "example")
                 .body(sampleUser);
     }
 
     @GetMapping
-    public String error() {
-        throw new RuntimeException("error");
-
+    public ResponseEntity<SampleUser> getUser(@RequestParam(name = "age", required = false) Integer age,
+                                              @RequestParam(name = "name", required = false) String name,
+                                              @RequestParam(name = "surname", required = false) String surname) {
+        // some logic to get
+        return ResponseEntity.ok(new SampleUser(age, name, surname));
     }
+
+    @PatchMapping("/{name}")
+    public ResponseEntity<SampleUser> updateUser(@RequestBody SampleUser sampleUser, @PathVariable String name) {
+        // some logic to update user using his name
+        return ResponseEntity.ok(sampleUser);
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String name) {
+        // some logic to delete user using his name
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @GetMapping("/exception")
+    public ResponseEntity<SampleUser> getWithException() {
+        // some logic throwing an exception (f.e. IllegalStateException, RuntimeException etc)
+        throw new IllegalStateException("Illegal user state");
+    }
+
 
 
 }

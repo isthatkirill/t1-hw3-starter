@@ -12,6 +12,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -49,15 +50,18 @@ public class LoggerFilter extends OncePerRequestFilter {
     private void logRequest(ContentCachingRequestWrapper requestWrapper) {
         String requestBody = getBody(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding());
         String requestHeaders = getRequestHeadersAsString(requestWrapper);
-        log.info("Request: method = [{}], uri = [{}], request body = [{}], request headers = [{}]",
-                requestWrapper.getMethod(), requestWrapper.getRequestURI(), requestBody, requestHeaders);
+        String params = requestWrapper.getParameterMap().entrySet().stream()
+                        .map(entry -> entry.getKey() + ": " + Arrays.toString(entry.getValue()))
+                                .collect(Collectors.joining(", "));
+        log.info("Request: method = [{}], uri = [{}], body = [{}], params = [{}], headers = [{}]",
+                requestWrapper.getMethod(), requestWrapper.getRequestURI(), requestBody, params, requestHeaders);
     }
 
     private void logResponse(ContentCachingResponseWrapper responseWrapper, long startTime) {
         long timeTaken = System.currentTimeMillis() - startTime;
-        String responseBody = getResponseHeadersAsString(responseWrapper);
+        String responseBody = getBody(responseWrapper.getContentAsByteArray(), responseWrapper.getCharacterEncoding());
         String responseHeaders = getResponseHeadersAsString(responseWrapper);
-        log.info("Response: response status = [{}], response body = [{}], time taken = [{} ms], response headers = [{}]",
+        log.info("Response: status = [{}], body = [{}], time taken = [{} ms], headers = [{}]",
                 responseWrapper.getStatus(), responseBody, timeTaken, responseHeaders);
     }
 
@@ -68,7 +72,7 @@ public class LoggerFilter extends OncePerRequestFilter {
         responseWrapper.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         responseWrapper.getWriter().write("Error occurred: " + className + " [" + message + "]");
         responseWrapper.getWriter().flush();
-        log.error("[FAILED]: error = [{}], response status = [{}],  response body = [{}]",
+        log.error("[FAILED] Response: error = [{}], status = [{}],  body = [{}]",
                 className, responseWrapper.getStatus(), message);
     }
 
