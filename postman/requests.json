@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "11cc1603-cd2b-4323-9bb8-bfff73957915",
+		"name": "t1-hw3-starter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27080870"
+	},
+	"item": [
+		{
+			"name": "add user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 18,\r\n    \"name\": \"ivan\",\r\n    \"surname\": \"ivanov\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sample/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sample",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sample/user?age=18&name=ivan&surname=ivanov",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sample",
+						"user"
+					],
+					"query": [
+						{
+							"key": "age",
+							"value": "18"
+						},
+						{
+							"key": "name",
+							"value": "ivan"
+						},
+						{
+							"key": "surname",
+							"value": "ivanov"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 18\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sample/user/ivan",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sample",
+						"user",
+						"ivan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sample/user/ivan",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sample",
+						"user",
+						"ivan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get error",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 18,\r\n    \"name\": \"ivan\",\r\n    \"surname\": \"ivanov\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sample/user/exception",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sample",
+						"user",
+						"exception"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
