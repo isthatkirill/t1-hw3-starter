@@ -1,0 +1,24 @@
+2024-05-29 20:19:20.367 INFO  LoggerSampleApplication             [main] Starting LoggerSampleApplication using Java 17 with PID 16060 (C:\Users\user\Desktop\myProj\hw-three-starter\http-logger-sample-app\target\classes started by user in C:\Users\user\Desktop\myProj\hw-three-starter)
+2024-05-29 20:19:20.369 DEBUG LoggerSampleApplication             [main] Running with Spring Boot v3.3.0, Spring v6.1.8
+2024-05-29 20:19:20.370 INFO  LoggerSampleApplication             [main] No active profile set, falling back to 1 default profile: "default"
+2024-05-29 20:19:21.370 INFO  TomcatWebServer                     [main] Tomcat initialized with port 8080 (http)
+2024-05-29 20:19:21.382 INFO  Http11NioProtocol                   [main] Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-29 20:19:21.384 INFO  StandardService                     [main] Starting service [Tomcat]
+2024-05-29 20:19:21.385 INFO  StandardEngine                      [main] Starting Servlet engine: [Apache Tomcat/10.1.24]
+2024-05-29 20:19:21.445 INFO  [/]                                 [main] Initializing Spring embedded WebApplicationContext
+2024-05-29 20:19:21.446 INFO  ServletWebServerApplicationContext  [main] Root WebApplicationContext: initialization completed in 1022 ms
+2024-05-29 20:19:21.500 DEBUG LoggerFilter                        [main] Filter 'loggingFilter' configured for use
+2024-05-29 20:19:21.789 INFO  Http11NioProtocol                   [main] Starting ProtocolHandler ["http-nio-8080"]
+2024-05-29 20:19:21.803 INFO  TomcatWebServer                     [main] Tomcat started on port 8080 (http) with context path '/'
+2024-05-29 20:19:21.812 INFO  LoggerSampleApplication             [main] Started LoggerSampleApplication in 1.867 seconds (process running for 2.647)
+2024-05-29 20:19:44.017 INFO  [/]                                 [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-29 20:19:44.017 INFO  DispatcherServlet                   [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-05-29 20:19:44.019 INFO  DispatcherServlet                   [http-nio-8080-exec-1] Completed initialization in 1 ms
+2024-05-29 20:19:44.166 INFO  LoggerFilter                        [http-nio-8080-exec-1] Request: method = [POST], uri = [/sample/user], body = [{"age": 18,"name": "ivan","surname": "ivanov"}], params = [], headers = [content-type: application/json || user-agent: PostmanRuntime/7.37.3 || accept: */* || cache-control: no-cache || postman-token: d2b67ef2-eb85-4d5e-b91b-b2ac7ceb0b3b || host: localhost:8080 || accept-encoding: gzip, deflate, br || connection: keep-alive || content-length: 66]
+2024-05-29 20:19:44.168 INFO  LoggerFilter                        [http-nio-8080-exec-1] Response: status = [201], body = [{"age":18,"name":"ivan","surname":"ivanov"}], time taken = [138 ms], headers = [header-for-example: example]
+2024-05-29 20:19:48.420 INFO  LoggerFilter                        [http-nio-8080-exec-3] Request: method = [GET], uri = [/sample/user], body = [], params = [age: [18], name: [ivan], surname: [ivanov]], headers = [user-agent: PostmanRuntime/7.37.3 || accept: */* || cache-control: no-cache || postman-token: dee01387-ea67-488f-b231-23580a622459 || host: localhost:8080 || accept-encoding: gzip, deflate, br || connection: keep-alive]
+2024-05-29 20:19:48.421 INFO  LoggerFilter                        [http-nio-8080-exec-3] Response: status = [200], body = [{"age":18,"name":"ivan","surname":"ivanov"}], time taken = [5 ms], headers = []
+2024-05-29 20:19:51.162 INFO  LoggerFilter                        [http-nio-8080-exec-9] Request: method = [DELETE], uri = [/sample/user/ivan], body = [], params = [], headers = [user-agent: PostmanRuntime/7.37.3 || accept: */* || cache-control: no-cache || postman-token: 5df856cd-d105-4b44-897b-819f440b6a5a || host: localhost:8080 || accept-encoding: gzip, deflate, br || connection: keep-alive]
+2024-05-29 20:19:51.163 INFO  LoggerFilter                        [http-nio-8080-exec-9] Response: status = [204], body = [], time taken = [4 ms], headers = []
+2024-05-29 20:19:53.999 INFO  LoggerFilter                        [http-nio-8080-exec-5] Request: method = [GET], uri = [/sample/user/exception], body = [], params = [], headers = [content-type: application/json || user-agent: PostmanRuntime/7.37.3 || accept: */* || cache-control: no-cache || postman-token: 21f68df4-1d7c-4080-a8d7-6b6e187c4b08 || host: localhost:8080 || accept-encoding: gzip, deflate, br || connection: keep-alive || content-length: 66]
+2024-05-29 20:19:54.000 ERROR LoggerFilter                        [http-nio-8080-exec-5] [FAILED] Response: error = [IllegalStateException], status = [500],  body = [Illegal user state]
