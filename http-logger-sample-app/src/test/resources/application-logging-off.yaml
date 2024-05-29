@@ -1,0 +1,8 @@
+http:
+  logging:
+    enabled: false
+
+spring:
+  config:
+    activate:
+      on-profile: "logging-off"

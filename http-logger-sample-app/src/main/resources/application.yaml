@@ -1,4 +1,4 @@
 http:
   logging:
     enabled: true
-    methods: [ 'GET', 'POST', 'DELETE', 'PATCH']
+    methods: [ 'GET', 'POST', 'DELETE', 'PATCH' ]

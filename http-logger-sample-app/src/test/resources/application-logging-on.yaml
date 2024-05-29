@@ -1,0 +1,9 @@
+http:
+  logging:
+    enabled: true
+    methods: [ "GET", "POST", "PUT" ]
+
+spring:
+  config:
+    activate:
+      on-profile: "logging-on"
