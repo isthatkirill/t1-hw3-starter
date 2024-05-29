@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>http-logger-spring-boot-starter</artifactId>
+    <description>Starter for logging http requests</description>
 
     <properties>
         <spring-boot.repackage.skip>true</spring-boot.repackage.skip>

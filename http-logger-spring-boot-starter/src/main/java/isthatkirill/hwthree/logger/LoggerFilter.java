@@ -6,12 +6,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -51,8 +53,8 @@ public class LoggerFilter extends OncePerRequestFilter {
         String requestBody = getBody(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding());
         String requestHeaders = getRequestHeadersAsString(requestWrapper);
         String params = requestWrapper.getParameterMap().entrySet().stream()
-                        .map(entry -> entry.getKey() + ": " + Arrays.toString(entry.getValue()))
-                                .collect(Collectors.joining(", "));
+                .map(entry -> entry.getKey() + ": " + Arrays.toString(entry.getValue()))
+                .collect(Collectors.joining(", "));
         log.info("Request: method = [{}], uri = [{}], body = [{}], params = [{}], headers = [{}]",
                 requestWrapper.getMethod(), requestWrapper.getRequestURI(), requestBody, params, requestHeaders);
     }

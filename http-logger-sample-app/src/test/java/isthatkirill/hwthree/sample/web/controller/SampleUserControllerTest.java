@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,6 +70,24 @@ class SampleUserControllerTest {
         assertThat(output.getOut()).contains(sampleUser.getName(), uri, "POST", "LoggerFilter");
         // check that output contains response details
         assertThat(output.getOut()).contains("Content-Type: application/json");
+    }
+
+    @Test
+    @SneakyThrows
+    void loggerFilterIsNotWorkingWithNotAllowedMethodTest(CapturedOutput output) {
+        String uri = "/sample/user/ivan";
+
+        // delete is not allowed for logging (see application-logging-on.yaml)
+        mvc.perform(delete(uri)
+                        .characterEncoding(StandardCharsets.UTF_8))
+                .andExpect(status().isNoContent());
+
+        // check that loggerFilter.doFilter(...) invoked
+        verify(loggerFilter, times(1))
+                .doFilter(any(), any(), any());
+
+        // check that output does NOT contain request/response details for DELETE method
+        assertThat(output.getOut()).doesNotContain(uri, "DELETE", "headers");
     }
 
     @Test

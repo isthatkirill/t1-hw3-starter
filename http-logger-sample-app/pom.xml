@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>http-logger-sample-app</artifactId>
+    <description>Sample app for testing starter</description>
 
     <dependencies>
         <dependency>
